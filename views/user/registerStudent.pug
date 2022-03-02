@@ -1,6 +1,8 @@
 extends ../layout
 
 block content
+    include ../mixins/registerForm
+    +registerForm('/register-student','student')
     div.form-container
         form(action= '/register-student' method= 'post')
             div.form-input
