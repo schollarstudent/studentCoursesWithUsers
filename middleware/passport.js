@@ -32,11 +32,13 @@ passport.serializeUser(function(user,done){
     })
 });
 
-passport.deserializeUser(async function (user,done){
-    const userModel = await User.findByPk(user.id);
-    process.nextTick(function(){
-        return done(null,userModel);
+passport.deserializeUser(async function(user,done){
+    const userModel = await User.findByPk(user.id,{
+        include:['student','staff']
     });
+    process.nextTick(function(){
+
+    })
 });
 
 module.exports.passport = passport;
