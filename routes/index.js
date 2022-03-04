@@ -3,12 +3,19 @@ var router = express.Router();
 const courseController = require('../controllers/courseController.js');
 const studentController = require('../controllers/studentController.js');
 const userController = require('../controllers/userController.js');
-
+function redirectGuests(req,res,next){
+  if (!req.user){
+    res.redirect('/login');
+    return
+  }
+  next();
+};
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('/courses');
 });
 
+router.get('/courses',redirectGuests,courseController.viewAll);
 router.get('/courses', courseController.viewAll);
 router.get('/courses/profile/:id', courseController.viewProfile);
 router.get('/courses/edit/:id', courseController.renderEditForm);
@@ -38,3 +45,4 @@ router.post ('/register-staff',userController.registerStaff);
 module.exports = router;
 router.get('/login',userController.renderLoginForm);
 router.post('/login',userController.login);
+router.get ('/logout',userController.logout);

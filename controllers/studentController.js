@@ -2,12 +2,24 @@ const {Student, Course, StudentCourses} = require('../models')
 
 //view all
 module.exports.viewAll = async function (req, res) {
+    if (!req.user.can('view students')){
+        res.redirect('/');
+        return
+    }
     const students = await Student.findAll();
     res.render('student/view_all', {students});
-}
+};
 
 //profile
 module.exports.viewProfile = async function (req, res) {
+    const isAdmin = req.user.can('view students');
+    const profilBelongsToUser= req.user.can('view self')&& req.user.matchesStudentId(req.params.id);
+
+    //if they arent staff and they arent the student whose profile they are trying to view, redirect
+    if(!isAdmin && !profilBelongsToUser){
+        res.redirect('/')
+        return
+    }
     const student = await Student.findByPk(req.params.id, {
         include: 'courses'
     });
@@ -43,6 +55,8 @@ module.exports.addStudent = async function (req, res) {
 
 //render edit
 module.exports.renderEditForm = async function (req, res) {
+    const isAdmin =req.user.can('edit student');
+    const profileBelonsToUSer=req.user.can('edit self')&& req.user.matchesStudent(req.params.id);
     const student = await Student.findByPk(req.params.id);
     console.log(student);
     res.render('student/edit', {student});
