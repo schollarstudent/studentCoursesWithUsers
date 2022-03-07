@@ -29,8 +29,6 @@ router.get('/students', studentController.viewAll);
 router.get('/students/profile/:id', studentController.viewProfile);
 router.get('/students/edit/:id', studentController.renderEditForm);
 router.post('/students/edit/:id', studentController.updateStudent);
-router.get('/students/add', studentController.renderAddForm);
-router.post('/students/add', studentController.addStudent);
 router.get('/students/delete/:id', studentController.deleteStudent);
 
 router.post('/students/:studentId/enroll/', studentController.enrollStudent);
@@ -42,6 +40,7 @@ router.get('/register-student',userController.renderStudentRegistrationForm);
 router.post('/register-student',userController.registerStudent);
 router.get('/register-staff',userController.renderStaffRegistrationForm);
 router.post ('/register-staff',userController.registerStaff);
+router.post('/logout',userController.logout);
 module.exports = router;
 router.get('/login',userController.renderLoginForm);
 router.post('/login',userController.login);
